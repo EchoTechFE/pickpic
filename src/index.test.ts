@@ -304,4 +304,67 @@ test('should find best style', () => {
       fit: 'contain',
     })?.id,
   ).toBe('lfit_w1080_h1920_jpg')
+
+  // 如果容器宽度比较大
+  expect(
+    pickPic.getStyle({
+      width: 2000,
+      height: 2000,
+      format: 'jpg',
+      fit: 'cover',
+    }).id,
+  ).toBe('fill_w540_h540_jpg')
+
+  expect(
+    pickPic.getStyle({
+      width: 2000,
+      height: 8000,
+      format: 'jpg',
+      fit: 'cover',
+    }).id,
+  ).toBe('lfit_w1080_jpg')
+
+  expect(
+    pickPic.getStyle({
+      width: 2000,
+      height: 4000,
+      format: 'jpg',
+      fit: 'contain',
+    }).id,
+  ).toBe('lfit_w1080_jpg')
+
+  expect(
+    pickPic.getStyle({
+      width: 2000,
+      height: 3500,
+      format: 'jpg',
+      fit: 'contain',
+    }).id,
+  ).toBe('lfit_w1080_h1920_jpg')
+
+  // 只有宽度
+  expect(
+    pickPic.getStyle({
+      width: 118,
+      format: 'jpg',
+      fit: 'contain',
+    }).id,
+  ).toBe('lfit_w100_jpg')
+
+  expect(
+    pickPic.getStyle({
+      width: 400,
+      format: 'jpg',
+      fit: 'contain',
+    }).id,
+  ).toBe('lfit_w540_jpg')
+
+  // 只有高度的，目前会落在这里
+  expect(
+    pickPic.getStyle({
+      height: 200,
+      format: 'jpg',
+      fit: 'contain',
+    }).id,
+  ).toBe('lfit_w1080_h1920_jpg')
 })
