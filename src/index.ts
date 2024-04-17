@@ -1,6 +1,6 @@
-type ImageFormat = 'auto' | 'jpg' | 'png' | 'webp' | 'avif' | 'gif'
+export type ImageFormat = 'auto' | 'jpg' | 'png' | 'webp' | 'avif' | 'gif'
 
-type ImageStyle = {
+export type ImageStyle = {
   id: string
   w: number
   h: number
@@ -19,19 +19,34 @@ const SIZE_HIT_TOLERANCE = 0.2
  */
 export class PickPic {
   private styles: ImageStyle[]
-  private fallbackStyle: ImageStyle
+  private fallbackStyles: Record<string, string>
   private lfits: ImageStyle[]
   private mfits: ImageStyle[]
   private fills: ImageStyle[]
+  private enableCache: boolean
+  // TODO: 优化
+  private cache: Map<string, { s: ImageStyle; update: number }> = new Map()
 
-  constructor(opts: { styles: ImageStyle[]; fallbackStyle: ImageStyle }) {
+  constructor(opts: {
+    styles: ImageStyle[]
+    fallbackStyles: Record<string, string>
+    enableCache: boolean
+  }) {
     this.styles = opts.styles
-    this.fallbackStyle = opts.fallbackStyle
+    this.fallbackStyles = opts.fallbackStyles
     this.lfits = this.styles.filter((style) => style.m === 'lfit')
     this.mfits = this.styles.filter((style) => style.m === 'mfit')
     this.fills = this.styles
       .filter((style) => style.m === 'fill')
       .sort((a, b) => (a.w * a.h < b.w * b.h ? -1 : 1))
+    this.enableCache = opts.enableCache
+  }
+
+  private getFallbackStyle(format: string) {
+    const name = this.fallbackStyles[format]
+      ? this.fallbackStyles[format]
+      : this.fallbackStyles['default']
+    return this.styles.find((s) => s.id === name)
   }
 
   private findFits(opts: {
@@ -116,10 +131,39 @@ export class PickPic {
     if (highPriorities.length > 0) {
       return highPriorities[0].style
     }
-    return results[results.length - 1].style ?? this.fallbackStyle
+    return results[results.length - 1].style ?? this.getFallbackStyle(format)
   }
 
   getStyle(opts: {
+    width?: number
+    height?: number
+    fit?: 'cover' | 'contain'
+    format: ImageFormat
+  }) {
+    const k = `${opts.fit ?? 'cover'}_w${opts.width ?? 0}_h${opts.height ?? 0}_${opts.format}`
+
+    if (this.enableCache) {
+      if (this.cache.get(k)) {
+        this.cache.get(k).update = Date.now()
+        return this.cache.get(k).s
+      }
+    }
+
+    const style = this.getStyleImpl(opts)
+
+    if (this.enableCache) {
+      this.cache.set(k, { s: style, update: Date.now() })
+      for (const [k, v] of this.cache.entries()) {
+        if (Date.now() - v.update > 1000 * 20) {
+          this.cache.delete(k)
+        }
+      }
+    }
+
+    return style
+  }
+
+  private getStyleImpl(opts: {
     width?: number
     height?: number
     fit?: 'cover' | 'contain'
@@ -148,7 +192,7 @@ export class PickPic {
         if (style) {
           return style
         }
-        return ordered[ordered.length - 1] ?? this.fallbackStyle
+        return ordered[ordered.length - 1] ?? this.getFallbackStyle(format)
       } else if (height) {
         const ordered = [...this.lfits]
           .filter((s) => s.f === format)
@@ -160,9 +204,9 @@ export class PickPic {
         if (style) {
           return style
         }
-        return ordered[ordered.length - 1] ?? this.fallbackStyle
+        return ordered[ordered.length - 1] ?? this.getFallbackStyle(format)
       } else {
-        return this.fallbackStyle
+        return this.getFallbackStyle(format)
       }
     }
 

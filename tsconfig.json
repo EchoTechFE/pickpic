@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["es2015"],
-    "outDir": "./dist"
+    "lib": ["ESNext"],
+    "outDir": "./dist",
+    "target": "ES2015"
   },
   "include": ["./src/**/*"]
 }

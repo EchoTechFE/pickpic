@@ -1,5 +1,94 @@
+import type { ImageFormat, ImageStyle } from './index'
 import { PickPic } from './index'
 import { test, expect } from 'vitest'
+
+test('lagacy style', () => {
+  const styles = [
+    'lfit_w250_h400_jpg',
+    'lfit_w300_h480_jpg',
+    'lfit_w180_jpg',
+    'lfit_w240_jpg',
+    'lfit_w480_jpg',
+    'lfit_w540_jpg',
+    'lfit_w600_png',
+    'lfit_w750_jpg',
+    'lfit_w900_png',
+    'lfit_w240_png',
+    'lfit_w1080_jpg',
+    'lfit_w400_h640_jpg',
+    'lfit_w500_h800_jpg',
+    'lfit_w1080_h1920_jpg',
+    'fill_w240_h320_jpg',
+    'fill_w480_h640_jpg',
+    'fill_w540_h720_jpg',
+    'fill_w720_h960_jpg',
+    'fill_w50_h50_jpg',
+    'fill_w100_h100_jpg',
+    'fill_w200_h200_png',
+    'fill_w300_h300_jpg',
+    'fill_w400_h400_jpg',
+    'fill_w500_h500_jpg',
+    'fill_w540_h540_jpg',
+    'fill_w720_h720_jpg',
+    'fill_w500_h400_jpg',
+    'fill_w750_h600_jpg',
+    'fill_w750_h600_png',
+    'fill_w320_h240_jpg',
+    'fill_w720_h540_jpg',
+    'fill_w1080_h810_jpg',
+    'fill_w710_h400_jpg',
+    'fill_w900_h300_jpg',
+    'fill_w700_h100_jpg',
+  ].flatMap((stylename) => {
+    let [fit, w, h, format] = stylename.split('_') as [
+      'lfit' | 'mfit' | 'fill',
+      any,
+      any,
+      ImageFormat,
+    ]
+    if (!format) {
+      format = h
+      h = 'h0'
+    }
+
+    const imageStyles = [
+      {
+        id: stylename,
+        w: +w.slice(1),
+        h: +h.slice(1),
+        f: format,
+        m: fit,
+      },
+    ]
+    if (format === 'jpg') {
+      imageStyles.push({
+        id: `${stylename}_webp`,
+        w: +w.slice(1),
+        h: +h.slice(1),
+        f: 'webp',
+        m: fit,
+      })
+    }
+    return imageStyles as ImageStyle[]
+  })
+
+  const pickPic = new PickPic({
+    styles,
+    fallbackStyles: {
+      default: 'lfit_w1080_jpg',
+    },
+    enableCache: true,
+  })
+
+  expect(
+    pickPic.getStyle({
+      width: 72,
+      height: 96,
+      format: 'webp',
+      fit: 'cover',
+    }).id,
+  ).toBe('fill_w240_h320_jpg_webp')
+})
 
 test('should find best style', () => {
   const pickPic = new PickPic({
@@ -82,13 +171,10 @@ test('should find best style', () => {
         f: 'jpg',
       },
     ],
-    fallbackStyle: {
-      id: 'lfit_w1080_jpg',
-      w: 1080,
-      h: 0,
-      m: 'lfit',
-      f: 'jpg',
+    fallbackStyles: {
+      default: 'lfit_w1080_jpg',
     },
+    enableCache: false,
   })
 
   expect(
