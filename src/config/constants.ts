@@ -1,5 +1,8 @@
+export const SIZE_HIT_TOLERANCE = 0.2
+
 export enum RESIZE_MODE {
   LFIT = 'lfit',
+  MFIT = 'mfit',
   FILL = 'fill',
 }
 
@@ -24,11 +27,73 @@ export enum RESIZE_PATTERN {
   HEIGHT_400 = 'h400',
 }
 
+export const WidthHeightReg = /^(w(\d+)|h(\d+)|w(\d+)_h(\d+))$/
+
+export const VideoExtList = [
+  'mp4',
+  'avi',
+  'mov',
+  'wmv',
+  'flv',
+  'mkv',
+  'webm',
+  'm4v',
+  '3gp',
+  '3g2',
+  'ts',
+  'mts',
+  'm2ts',
+  'vob',
+  'ogv',
+  'rm',
+  'rmvb',
+  'asf',
+  'divx',
+  'xvid',
+  'mxf',
+  'dv',
+  'dvr-ms',
+  'f4v',
+  'f4p',
+  'f4a',
+  'f4b',
+  'm2v',
+  'm1v',
+  'mjpeg',
+  'mjpg',
+  'mpeg',
+  'mpg',
+  'mp2',
+  'mpv',
+  'mts',
+  'm2t',
+  'm2ts',
+  'nut',
+  'nsv',
+  'ps',
+  'rec',
+  'rm',
+  'rmvb',
+  'swf',
+  'ts',
+  'vob',
+  'vp6',
+  'vp7',
+  'vp8',
+  'vp9',
+  'webm',
+  'wm',
+  'wmv',
+  'yuv',
+]
+
 export enum FORMAT_PATTERN {
+  AUTO = 'auto',
   JPG = 'jpg',
   PNG = 'png',
   WEBP = 'webp',
   AVIF = 'avif',
+  GIF = 'gif',
 }
 
 export enum SHORT_RULE {
@@ -45,3 +110,9 @@ export enum URL_BUILDER_SIGN {
   WATERMARK_SIGN = 'watermark',
   ORIGIN_SIGN = 'origin',
 }
+
+export const DEFAULT_OSS_AVATAR =
+  'https://cdn.qiandaoapp.com/admins/e9ace2e2dac30ed544ae393f52a0a0e0.png'
+
+export const DEFAULT_OSS_PLACEHOLDER =
+  'https://cdn.qiandaoapp.com/interior/images/d93e104410367f82633c043b7d88a54d.png'

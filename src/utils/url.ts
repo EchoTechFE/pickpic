@@ -1,4 +1,4 @@
-import { URL_BUILDER_SIGN } from './contants'
+import { URL_BUILDER_SIGN } from '../config/constants'
 
 const { URL_SPLITER } = URL_BUILDER_SIGN
 
@@ -16,7 +16,7 @@ export class CustomURL {
     // 正则表达式用于匹配 URL 的各个部分
     const urlPattern =
       /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/
-    const matches = url.match(urlPattern)
+    const matches = url.match(urlPattern) || []
 
     // 协议部分
     this.protocol = matches[2] ? matches[2] + ':' : ''
@@ -31,13 +31,13 @@ export class CustomURL {
     // 查询字符串部分
     this.search = matches[6] || ''
     // 查询参数对象
-    this.searchParams = this.ParseSearchParams(this.search)
+    this.searchParams = this.parseSearchParams(this.search)
     // 哈希部分
     this.hash = matches[8] ? '#' + matches[8] : ''
   }
 
   // 解析查询字符串为对象
-  ParseSearchParams(search: string) {
+  parseSearchParams(search: string) {
     const params = new Map()
     if (search) {
       const query = search.slice(1)
@@ -51,7 +51,7 @@ export class CustomURL {
   }
 
   // 将查询参数对象转换为查询字符串
-  SerializeSearchParams() {
+  serializeSearchParams() {
     const paramsArray = []
     for (const [key, value] of this.searchParams) {
       paramsArray.push(
@@ -62,18 +62,39 @@ export class CustomURL {
   }
 
   // 获取完整的 URL 字符串
-  ToString() {
+  toString() {
     let url = this.protocol
     if (this.host) {
       url += '//' + this.host
     }
     url += this.pathname
-    url += this.SerializeSearchParams()
+    url += this.serializeSearchParams()
     url += this.hash
     return url
   }
 
-  JoinPath(...params: string[]) {
-    return this.ToString() + URL_SPLITER + params.join('')
+  joinPath(...params: string[]) {
+    if (params.length === 0) {
+      return this.toString()
+    }
+
+    return this.toString() + URL_SPLITER + params.join('')
   }
+}
+
+export function isValidUrl(url: string) {
+  if (url.length === 0) return false
+
+  const parsedUrl = url.trim()
+
+  const excludePath = ['Expires', 'tmp', 'im-images','auth_key']
+
+  for (let p of excludePath) {
+    if (parsedUrl.includes(p)) return false
+  }
+
+  if (/(cdn\.(echoing|imagefield|qiandaoapp)|\.qiandaocdn)/.test(url))
+    return true
+
+  return false
 }
