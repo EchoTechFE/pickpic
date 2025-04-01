@@ -1,6 +1,17 @@
-import { FORMAT_PATTERN, RESIZE_MODE, RESIZE_PATTERN } from '../config/constants'
+import {
+  FORMAT_PATTERN,
+  RESIZE_MODE,
+  RESIZE_PATTERN,
+} from '../config/constants'
 import { newUrlProcessBuilder } from './index'
 import { expect, test } from 'vitest'
+import { init } from '../pick'
+
+const Fly = require('flyio')
+
+init({
+  queryEngine:  Fly,
+})
 
 test('get image info form url and ignore imginfo after build', () => {
   const mockUrl =
@@ -20,6 +31,18 @@ test('get image info form url and ignore imginfo after build', () => {
   expect(result).toEqual(
     'https://trade.qiandaocdn.com/trade/images/Es6stFk4FV.jpg',
   )
+})
+
+test('async get image info', async () => {
+  const mockUrl = 'https://trade.qiandaocdn.com/trade/images/Es6stFk4FV.jpg'
+
+  const builder = newUrlProcessBuilder(mockUrl)
+  const imgInfo = await builder.parseAsync()
+
+  expect(imgInfo).toEqual({
+    width: 1280,
+    height: 1707,
+  })
 })
 
 test('add url params', () => {

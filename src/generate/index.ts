@@ -105,7 +105,7 @@ class UrlProcessBuilder {
   }
 
   // 通过 url 中的宽高信息来解析
-  async parse(): IParseMeta {
+  parse(): IParseMeta {
     if (this.parseMeta) {
       return this.parseMeta
     }
@@ -124,6 +124,13 @@ class UrlProcessBuilder {
 
       return this.parseMeta
     }
+  }
+
+  async parseAsync(): Promise<IParseMeta> {
+    const parseMeta = this.parse()
+    if (parseMeta?.width && parseMeta?.height) {
+      return parseMeta
+    }
 
     if (!singletonPickPicInstance?.config?.queryEngine) {
       return {
@@ -137,10 +144,12 @@ class UrlProcessBuilder {
     const { data } =
       await singletonPickPicInstance?.config?.queryEngine?.get(tempInstance)
 
-    return {
-      width: data.ImageWidth?.value,
-      height: data.ImageHeight?.value,
+    this.parseMeta = {
+      width: Number(data.ImageWidth?.value ?? 0),
+      height: Number(data.ImageHeight?.value ?? 0),
     }
+
+    return this.parseMeta
   }
 
   build(): string {
