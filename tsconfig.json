@@ -1,8 +1,22 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "outDir": "./dist",
-    "target": "ES2015"
-  },
-  "include": ["./src/**/*"]
+    "baseUrl": ".",
+    "outDir": "dist",
+    "sourceMap": false,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "lib": ["esnext", "dom"],
+    "types": ["node", "miniprogram-api-typings", "@types/uni-app"],
+    "rootDir": ".",
+    "typeRoots": ["node_modules/@types", "types"]
+  }
 }
