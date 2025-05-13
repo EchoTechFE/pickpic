@@ -45,6 +45,10 @@ class UrlProcessBuilder {
   constructor(url: string, config?: IUrlProcessBuilderConfig) {
     // this.config = config
 
+    if (singletonPickPicInstance?.config.decodeFunc) {
+      url = singletonPickPicInstance?.config.decodeFunc(url)
+    }
+
     this.rawUrl = url
 
     this.urlStruct = new CustomURL(this.rawUrl)
