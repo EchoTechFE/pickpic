@@ -11,6 +11,7 @@ export interface IPickPicConfig {
   enableCache: boolean
   sizeHitTolerance: number
   queryEngine: queryEngine | null
+  decodeFunc: (url: string) => string
 }
 
 interface queryEngine {

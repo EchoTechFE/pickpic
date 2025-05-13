@@ -20,4 +20,5 @@ export const defaultPickPicConfig: IPickPicConfig = {
   enableCache: true,
   sizeHitTolerance: SIZE_HIT_TOLERANCE,
   queryEngine: null,
+  decodeFunc: null,
 } as const
