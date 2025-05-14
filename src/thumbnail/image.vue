@@ -111,7 +111,7 @@ const props = withDefaults(
 const emit = defineEmits(['load', 'error', 'click'])
 
 const showDisplayImage = ref(false)
-const realUrl = ref('')
+const previewUrl = ref('')
 const displaySrc = ref('')
 const realSize = ref<null | { width: number; height: number }>(null)
 
@@ -252,6 +252,8 @@ async function setDisplaySrc() {
 
   const urlProcess = newUrlProcessBuilder(url)
 
+  previewUrl.value = urlProcess.build()
+
   const alignStyle = findAspect(realSize.value, {
     withFirst,
     mode: props.mode,
@@ -277,7 +279,7 @@ async function setDisplaySrc() {
 }
 
 function handlePreview() {
-  if (props.preview && realUrl.value) {
+  if (props.preview && previewUrl.value) {
     previewImage({
       items: props.previewList?.map((url) => {
         return {
@@ -285,7 +287,7 @@ function handlePreview() {
         }
       }) || [
         {
-          url: realUrl.value,
+          url: previewUrl.value,
         },
       ],
       size: props.size,
