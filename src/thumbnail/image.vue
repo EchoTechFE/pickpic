@@ -87,6 +87,7 @@ const props = withDefaults(
   {
     defaultUrl: DEFAULT_OSS_PLACEHOLDER,
     resize: true,
+    size: {},
     withBorder: false,
     borderRadius: 0,
     borderWidth: 1,
