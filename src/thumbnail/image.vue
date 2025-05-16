@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IThumbnailSize } from '../types'
+import type { IThumbnailSize } from 'pickpic'
 
 import {
   ref,
@@ -51,13 +51,13 @@ import {
   getCurrentInstance,
   normalizeStyle,
 } from 'vue'
-import {
-  DEFAULT_OSS_AVATAR,
-  DEFAULT_OSS_PLACEHOLDER,
-} from '../config/constants'
-import { findAspect, previewImage } from './index'
 
-import { newUrlProcessBuilder } from '../generate'
+import {
+  findAspect,
+  previewImage,
+  newUrlProcessBuilder,
+  DEFAULT_OSS_PLACEHOLDER,
+} from 'pickpic'
 
 const props = withDefaults(
   defineProps<{
