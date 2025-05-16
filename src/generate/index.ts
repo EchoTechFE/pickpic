@@ -128,6 +128,11 @@ class UrlProcessBuilder {
 
       return this.parseMeta
     }
+
+    return {
+      width: 0,
+      height: 0,
+    }
   }
 
   async parseAsync(): Promise<IParseMeta> {

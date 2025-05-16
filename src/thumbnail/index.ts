@@ -1,5 +1,4 @@
 import { singletonPickPicInstance } from '../pick'
-import { isValidUrl } from '../utils/url'
 import { FORMAT_PATTERN } from '../config/constants'
 import { IThumbnailSize } from '../types'
 
@@ -97,10 +96,7 @@ interface IPreviewImage {
 
 export function previewImage({ items = [], current = 0, size }: IPreviewImage) {
   const urls = items.map((item) => {
-    const result = isValidUrl(item.url)
-    const query = result ? getThumbnailQuery(size, 'image') : ''
-
-    return `${item.url}${query}`
+    return item.url
   })
 
   uni.previewImage({
