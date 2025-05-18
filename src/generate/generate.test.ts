@@ -1,16 +1,17 @@
 import {
+  CLOUDFLARE_RESIZE_MODE,
   FORMAT_PATTERN,
   RESIZE_MODE,
   RESIZE_PATTERN,
 } from '../config/constants'
 import { newUrlProcessBuilder } from './index'
 import { expect, test } from 'vitest'
-import { init } from '../pick'
+import { init, singletonPickPicInstance } from '../pick'
 
 const Fly = require('flyio')
 
 init({
-  queryEngine:  Fly,
+  queryEngine: Fly,
 })
 
 test('get image info form url and ignore imginfo after build', () => {
@@ -60,4 +61,21 @@ test('add url params', () => {
   expect(finalUrl).toEqual(
     'https://trade.qiandaocdn.com/trade/images/Es6stFk4FV.jpg!fill_w100_h100_webp',
   )
+})
+
+test('cloudflare process params', () => {
+  const mockUrl =
+    'https://image.tensorartassets.com/posts/images/740551773416304425/d6b7e84a-f8a0-440c-b6ea-90b52022a6e3.png'
+
+  singletonPickPicInstance?.setRegion('sg')
+
+  const builder = newUrlProcessBuilder(mockUrl)
+
+  const finalUrl = builder
+    .mode(CLOUDFLARE_RESIZE_MODE.CONTAIN)
+    .resize(RESIZE_PATTERN.WIDTH_100_HEIGHT_100)
+    .format(FORMAT_PATTERN.WEBP)
+    .build()
+
+  console.log('finalUrl', finalUrl)
 })

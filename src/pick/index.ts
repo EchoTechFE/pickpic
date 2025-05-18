@@ -1,10 +1,8 @@
 import { IImageStyle, IPickPicConfig } from '../types'
 import { defaultPickPicConfig } from '../config/default'
-import {
-  FORMAT_PATTERN,
-  RESIZE_MODE,
-  WidthHeightReg,
-} from '../config/constants'
+import { FORMAT_PATTERN, RESIZE_MODE } from '../config/constants'
+import { getSizeWithResizeParams } from '../utils/url'
+export * from './find'
 
 let singletonPickPicInstance: PickPic | null = null
 
@@ -20,21 +18,7 @@ export function init(pickPicConfig?: Partial<IPickPicConfig>) {
   const resizeModeValue = Object.values(mergeConfig.resizeMode)
 
   const styles = resizePatternValue.flatMap((p) => {
-    const matchList = WidthHeightReg.exec(p)
-
-    if (!matchList) return []
-
-    let w = 0
-    let h = 0
-
-    if (matchList[2]) {
-      w = Number(matchList[2])
-    } else if (matchList[3]) {
-      h = Number(matchList[3])
-    } else if (matchList[4] && matchList[5]) {
-      w = Number(matchList[4])
-      h = Number(matchList[5])
-    }
+    const { width: w, height: h } = getSizeWithResizeParams(p)
 
     const currentList: IImageStyle[] = []
 
@@ -55,6 +39,7 @@ export function init(pickPicConfig?: Partial<IPickPicConfig>) {
 
   singletonPickPicInstance = new PickPic(styles, mergeConfig)
 
+  console.log('init singletonPickPicInstance success', singletonPickPicInstance)
 }
 
 /**
@@ -303,6 +288,10 @@ export class PickPic {
       format: opts.format,
       fit,
     })
+  }
+
+  setRegion(region: string) {
+    this.config.region = region
   }
 }
 

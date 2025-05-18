@@ -1,9 +1,25 @@
+export const BUILDER_PROVIDER_MAP = {
+  ALIYUN: 'aliyun',
+  CLOUDFLARE: 'cloudflare',
+}
+
 export const SIZE_HIT_TOLERANCE = 0.2
+
+export enum CLOUDFLARE_RESIZE_MODE {
+  CONTAIN = 'contain',
+  COVER = 'cover',
+}
 
 export enum RESIZE_MODE {
   LFIT = 'lfit',
   MFIT = 'mfit',
   FILL = 'fill',
+}
+
+export const RESIZE_MODE_CLOUDFLARE_RESIZE_MODE_RELATION = {
+  [RESIZE_MODE.LFIT]: CLOUDFLARE_RESIZE_MODE.CONTAIN,
+  [RESIZE_MODE.MFIT]: CLOUDFLARE_RESIZE_MODE.CONTAIN,
+  [RESIZE_MODE.FILL]: CLOUDFLARE_RESIZE_MODE.COVER,
 }
 
 export enum RESIZE_PATTERN {
@@ -109,6 +125,13 @@ export enum URL_BUILDER_SIGN {
   ROTATE_SIGN = 'rotate',
   WATERMARK_SIGN = 'watermark',
   ORIGIN_SIGN = 'origin',
+}
+
+export enum CLOUDFLARE_BUILDER_SIGN {
+  PATH_PREFIX = '/cdn-cgi/image',
+  PATH_SPLITER = '/',
+  PARAMS_SPLITER = ',',
+  PARAMS_CONNECTOR = '=',
 }
 
 export const DEFAULT_OSS_AVATAR =

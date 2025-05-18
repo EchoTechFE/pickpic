@@ -1,4 +1,6 @@
-import { URL_BUILDER_SIGN } from '../config/constants'
+import { URL_BUILDER_SIGN, WidthHeightReg } from '../config/constants'
+import { IThumbnailSize } from '../types'
+import { getSystemInfo, rpx2px } from '../thumbnail'
 
 const { URL_SPLITER } = URL_BUILDER_SIGN
 
@@ -87,7 +89,7 @@ export function isValidUrl(url: string) {
 
   const parsedUrl = url.trim()
 
-  const excludePath = ['Expires', 'tmp', 'im-images','auth_key']
+  const excludePath = ['Expires', 'tmp', 'im-images', 'auth_key']
 
   for (let p of excludePath) {
     if (parsedUrl.includes(p)) return false
@@ -97,4 +99,63 @@ export function isValidUrl(url: string) {
     return true
 
   return false
+}
+
+export function getSizeWithResizeParams(resize: string): {
+  width: number
+  height: number
+} {
+  const matchList = WidthHeightReg.exec(resize)
+
+  if (!matchList) return { width: 0, height: 0 }
+
+  let w = 0
+  let h = 0
+
+  if (matchList[2]) {
+    w = Number(matchList[2])
+  } else if (matchList[3]) {
+    h = Number(matchList[3])
+  } else if (matchList[4] && matchList[5]) {
+    w = Number(matchList[4])
+    h = Number(matchList[5])
+  }
+
+  return {
+    width: w,
+    height: h,
+  }
+}
+
+
+export function size2Num(size: IThumbnailSize) {
+  let { width, height } = size
+
+  const pixelRatio = Math.ceil(getSystemInfo().pixelRatio ?? 0)
+
+  if (typeof width === 'string') {
+    if (width && /rpx/.test(width)) {
+      width = String(rpx2px(Number(width.replace(/rpx/, ''))))
+    }
+    if (width && /px/.test(width)) {
+      width = Number(width.replace(/px/, ''))
+    }
+  }
+
+  if (typeof height === 'string') {
+    if (height && /rpx/.test(height)) {
+      height = String(rpx2px(Number(height.replace(/rpx/, ''))))
+    }
+    if (height && /px/.test(height)) {
+      height = Number(height.replace(/px/, ''))
+    }
+  }
+
+  if (!width) width = 0
+  if (!height) height = 0
+
+  return {
+    width: +width * pixelRatio,
+    height: +height * pixelRatio,
+  }
 }

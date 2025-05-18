@@ -53,10 +53,10 @@ import {
 } from 'vue'
 
 import {
-  findAspect,
   previewImage,
   newUrlProcessBuilder,
   DEFAULT_OSS_PLACEHOLDER,
+  getSuitableUrlWithContext,
 } from 'pickpic'
 
 const props = withDefaults(
@@ -244,6 +244,7 @@ async function setDisplaySrc() {
   if (!realSize.value) {
     return
   }
+
   const { url, withFirst, defaultUrl } = props
 
   if (!url) {
@@ -255,28 +256,15 @@ async function setDisplaySrc() {
 
   previewUrl.value = urlProcess.build()
 
-  const alignStyle = findAspect(realSize.value, {
-    withFirst,
+  const processedUrl = getSuitableUrlWithContext(url, {
+    width: realSize.value.width,
+    height: realSize.value.height,
     mode: props.mode,
+    withFirst,
+    styleName: props.size.styleName,
   })
 
-  if (props.size?.styleName) {
-    urlProcess.styleName(props.size.styleName)
-  }
-
-  urlProcess
-    .mode(alignStyle.m)
-    .resize(
-      `${
-        !alignStyle.h
-          ? `w${alignStyle.w}`
-          : !alignStyle.w
-            ? `h${alignStyle.h}`
-            : `w${alignStyle.w}_h${alignStyle.h}`
-      }`,
-    )
-
-  displaySrc.value = urlProcess.build()
+  displaySrc.value = processedUrl
 }
 
 function handlePreview() {
