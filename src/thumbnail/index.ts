@@ -1,65 +1,11 @@
-import { singletonPickPicInstance } from '../pick'
-import { FORMAT_PATTERN } from '../config/constants'
+import { singletonPickPicInstance, findAspect } from '../pick'
 import { IThumbnailSize } from '../types'
-
-function size2Num(size: IThumbnailSize) {
-  let { width, height } = size
-
-  const pixelRatio = Math.ceil(getSystemInfo().pixelRatio ?? 0)
-
-  if (typeof width === 'string') {
-    if (width && /rpx/.test(width)) {
-      width = String(rpx2px(Number(width.replace(/rpx/, ''))))
-    }
-    if (width && /px/.test(width)) {
-      width = Number(width.replace(/px/, ''))
-    }
-  }
-
-  if (typeof height === 'string') {
-    if (height && /rpx/.test(height)) {
-      height = String(rpx2px(Number(height.replace(/rpx/, ''))))
-    }
-    if (height && /px/.test(height)) {
-      height = Number(height.replace(/px/, ''))
-    }
-  }
-
-  if (!width) width = 0
-  if (!height) height = 0
-
-  return {
-    width: +width * pixelRatio,
-    height: +height * pixelRatio,
-  }
-}
 
 /**
  * 找到一个图片规格，图片规格尽量与传入的尺寸匹配，在不完全匹配的情况下，选取图片质量更好的图片规格
  * @param {*} size
  * @param {*} widthFirst 会进行两遍寻找，在两次寻找都没有找到合适的图时，是否启用宽度优先模式匹配
  */
-export function findAspect(
-  size: IThumbnailSize,
-  { widthFirst = false, mode = 'aspectFit' } = {},
-) {
-  const fit = mode === 'aspectFit' ? 'contain' : 'cover'
-
-  size = size2Num(size)
-
-  if (!singletonPickPicInstance) {
-    throw new Error('singletonPickPicInstance is not init')
-  }
-
-  const style = singletonPickPicInstance.getStyle({
-    width: +size.width,
-    height: +(widthFirst ? 0 : size.height),
-    fit,
-    format: FORMAT_PATTERN.AUTO,
-  })
-
-  return style
-}
 
 export function getThumbnailQuery(
   size: IThumbnailSize,

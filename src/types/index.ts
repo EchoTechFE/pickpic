@@ -12,6 +12,8 @@ export interface IPickPicConfig {
   sizeHitTolerance: number
   queryEngine: queryEngine | null
   decodeFunc: ((url: string) => string) | null
+
+  region: string
 }
 
 interface queryEngine {
