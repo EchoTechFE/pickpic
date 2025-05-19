@@ -38,8 +38,6 @@ export function init(pickPicConfig?: Partial<IPickPicConfig>) {
   })
 
   singletonPickPicInstance = new PickPic(styles, mergeConfig)
-
-  console.log('init singletonPickPicInstance success', singletonPickPicInstance)
 }
 
 /**

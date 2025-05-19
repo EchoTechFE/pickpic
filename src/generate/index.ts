@@ -55,8 +55,6 @@ export function getSuitableUrlWithContext(
     urlProcess.styleName(ctx.styleName)
   }
 
-  console.log('alignStyle', alignStyle)
-
   urlProcess
     .mode(alignStyle.m)
     .resize(
