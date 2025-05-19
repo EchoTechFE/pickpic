@@ -9,6 +9,10 @@ let singletonPickPicInstance: PickPic | null = null
 export function init(pickPicConfig?: Partial<IPickPicConfig>) {
   if (singletonPickPicInstance) return
 
+  singletonPickPicInstance = newPickPicInstance(pickPicConfig)
+}
+
+export function newPickPicInstance(pickPicConfig?: Partial<IPickPicConfig>): PickPic {
   const mergeConfig = {
     ...defaultPickPicConfig,
     ...pickPicConfig,
@@ -37,7 +41,7 @@ export function init(pickPicConfig?: Partial<IPickPicConfig>) {
     return currentList
   })
 
-  singletonPickPicInstance = new PickPic(styles, mergeConfig)
+  return new PickPic(styles, mergeConfig)
 }
 
 /**

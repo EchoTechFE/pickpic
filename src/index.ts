@@ -7,6 +7,13 @@ export {
 } from './config/constants'
 
 export type { IThumbnailSize } from './types'
-export { init, singletonPickPicInstance, findAspect } from './pick'
+export {
+  init,
+  singletonPickPicInstance,
+  findAspect,
+  newPickPicInstance,
+} from './pick'
+
 export { getThumbnailQuery, previewImage } from './thumbnail'
+
 export { newUrlProcessBuilder, getSuitableUrlWithContext } from './generate'
