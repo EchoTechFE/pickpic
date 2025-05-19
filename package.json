@@ -24,7 +24,7 @@
     "build": "vite build",
     "test": "vitest",
     "publint": "npx publint",
-    "publish": "npm publish --registry=https://registry.npmjs.org/ && cnpm sync pickpic",
+    "publish": "npm publish --registry=https://registry.npmjs.org",
     "sync": "cnpm sync pickpic"
   },
   "keywords": [],
