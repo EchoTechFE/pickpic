@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      pickpic:
-        specifier: file:.
-        version: file:(@dcloudio/uni-app@3.0.0-4020420240722002(@dcloudio/types@3.4.8)(postcss@8.5.3)(rollup@4.38.0)(vue@3.5.13(typescript@5.8.2)))(vue@3.5.13(typescript@5.8.2))
     devDependencies:
       '@dcloudio/types':
         specifier: 3.4.8
@@ -39,6 +35,9 @@ importers:
       glob:
         specifier: ^11.0.1
         version: 11.0.1
+      pickpic:
+        specifier: file:.
+        version: file:(@dcloudio/uni-app@3.0.0-4020420240722002(@dcloudio/types@3.4.8)(postcss@8.5.3)(rollup@4.38.0)(vue@3.5.13(typescript@5.8.2)))(vue@3.5.13(typescript@5.8.2))
       prettier:
         specifier: 3.2.5
         version: 3.2.5
