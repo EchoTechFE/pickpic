@@ -15,6 +15,11 @@ export class CustomURL {
   hash: string
 
   constructor(url: string) {
+    // 处理一下默认带 !lfit_w100 这种裁切的 url，直接丢弃
+    if (url.includes('!')) {
+      url = url.split('!')[0]
+    }
+
     // 正则表达式用于匹配 URL 的各个部分
     const urlPattern =
       /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/
@@ -22,6 +27,11 @@ export class CustomURL {
 
     // 协议部分
     this.protocol = matches[2] ? matches[2] + ':' : ''
+
+    if (this.protocol === 'http:') {
+      this.protocol = 'https:'
+    }
+
     // 主机部分，包含主机名和端口
     const hostPart = matches[4] || ''
     const hostPort = hostPart.split(':')
@@ -126,7 +136,6 @@ export function getSizeWithResizeParams(resize: string): {
     height: h,
   }
 }
-
 
 export function size2Num(size: IThumbnailSize) {
   let { width, height } = size
