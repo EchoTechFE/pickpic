@@ -8,7 +8,7 @@ import {
   VideoExtList,
   BUILDER_PROVIDER_MAP,
 } from '../config/constants'
-import { singletonPickPicInstance } from '../pick'
+import { PickPic } from '../pick'
 import { IUrlProcessBuilder } from './base'
 
 const { PARAM_SPLITER, WATERMARK_SIGN, ROTATE_SIGN, ORIGIN_SIGN } =
@@ -34,6 +34,8 @@ interface IParseMeta {
 export class AliyunUrlProcessBuilder implements IUrlProcessBuilder {
   static provider = BUILDER_PROVIDER_MAP.ALIYUN
 
+  pickPic: PickPic
+
   rawUrl: string
   urlStruct: CustomURL
 
@@ -43,11 +45,13 @@ export class AliyunUrlProcessBuilder implements IUrlProcessBuilder {
 
   params: IURLBuildParams = {}
 
-  constructor(url: string, config?: IUrlProcessBuilderConfig) {
+  constructor(url: string, pickPic: PickPic) {
     // this.config = config
 
-    if (singletonPickPicInstance?.config.decodeFunc) {
-      url = singletonPickPicInstance?.config.decodeFunc(url)
+    this.pickPic = pickPic
+
+    if (pickPic?.config.decodeFunc) {
+      url = pickPic?.config.decodeFunc(url)
     }
 
     this.rawUrl = url
@@ -142,7 +146,7 @@ export class AliyunUrlProcessBuilder implements IUrlProcessBuilder {
       return parseMeta
     }
 
-    if (!singletonPickPicInstance?.config?.queryEngine) {
+    if (!this.pickPic?.config?.queryEngine) {
       return {
         width: 0,
         height: 0,
@@ -151,8 +155,7 @@ export class AliyunUrlProcessBuilder implements IUrlProcessBuilder {
 
     const tempInstance = new AliyunUrlProcessBuilder(this.rawUrl).info().build()
 
-    const { data } =
-      await singletonPickPicInstance?.config?.queryEngine?.get(tempInstance)
+    const { data } = await this.pickPic?.config?.queryEngine?.get(tempInstance)
 
     this.parseMeta = {
       width: Number(data.ImageWidth?.value ?? 0),

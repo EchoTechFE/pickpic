@@ -7,7 +7,7 @@ import {
   RESIZE_MODE_CLOUDFLARE_RESIZE_MODE_RELATION,
   RESIZE_MODE,
 } from '../config/constants'
-import { singletonPickPicInstance } from '../pick'
+import { PickPic } from '../pick'
 import { IUrlProcessBuilder } from './base'
 
 const { PATH_PREFIX, PATH_SPLITER, PARAMS_SPLITER, PARAMS_CONNECTOR } =
@@ -33,13 +33,18 @@ export class CloudflareUrlProcessBuilder implements IUrlProcessBuilder {
 
   rawUrl: string
 
+  pickPic: PickPic
+
   parseMeta: IParseMeta | null = null
 
   params: IURLBuildParams = {}
 
-  constructor(url: string, config?: IUrlProcessBuilderConfig) {
-    if (singletonPickPicInstance?.config.decodeFunc) {
-      url = singletonPickPicInstance?.config.decodeFunc(url)
+  constructor(url: string, pickPic:PickPic) {
+
+    this.pickPic = pickPic
+
+    if (pickPic?.config.decodeFunc) {
+      url = pickPic?.config.decodeFunc(url)
     }
 
     this.rawUrl = url

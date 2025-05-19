@@ -1,6 +1,6 @@
 import { AliyunUrlProcessBuilder } from './aliyun'
 import { CloudflareUrlProcessBuilder } from './cloudflare'
-import { singletonPickPicInstance, findAspect } from '../pick'
+import { singletonPickPicInstance, findAspect, PickPic } from '../pick'
 import { BUILDER_PROVIDER_MAP } from '../config/constants'
 import { IUrlProcessBuilder } from './base'
 
@@ -9,8 +9,12 @@ const PROVIDER_BUILDER_LIST = [
   CloudflareUrlProcessBuilder,
 ]
 
-export function newUrlProcessBuilder(url: string): IUrlProcessBuilder {
-  const region = singletonPickPicInstance?.config?.region
+export function newUrlProcessBuilder(
+  url: string,
+  pickPic: PickPic,
+): IUrlProcessBuilder {
+  pickPic = pickPic ? pickPic : singletonPickPicInstance
+  const region = pickPic?.config?.region
 
   const provider =
     region === 'CN'
@@ -19,7 +23,7 @@ export function newUrlProcessBuilder(url: string): IUrlProcessBuilder {
 
   for (const builder of PROVIDER_BUILDER_LIST) {
     if (builder.provider === provider) {
-      return new builder(url)
+      return new builder(url,pickPic)
     }
   }
 

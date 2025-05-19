@@ -10,7 +10,7 @@
 
 `import * as pickpic from "pickpic"`
 
-`pickpic.pickPicConfig(pickPicConfig)`
+`pickpic.init(pickPicConfig)`
 
 | 参数               | 说明              | 类型                    | 默认值    |
 |------------------|-----------------|-----------------------|--------|
@@ -46,3 +46,9 @@
 | useSlot         | 支持给组件传 slot，位置在 image 下方                                                                    | boolean                                                                     | false                  |
 | mode            | 图片裁剪、缩放的模式 [image文档](https://developers.weixin.qq.com/miniprogram/dev/component/image.html) | string                                                                      | aspectFill             |
 | fadeIn          | 给图片增加一个渐进动画                                                                                 | boolean                                                                     | false                  |
+
+
+
+## 自定义
+1. 全局只会在 init 的时候初始化一个 singletonPickPicInstance 并与 thumbnail/image.vue 绑定
+2. 如果有自定义生成 url 不使用 Thumbnail 的形式，可以使用 newPickPicInstance 方法实例化并自行调用

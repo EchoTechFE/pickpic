@@ -7,6 +7,7 @@ interface IParseMeta {
 
 export interface IUrlProcessBuilder {
   rawUrl: string
+  pickPic: PickPic
   urlStruct?: CustomURL
   parseMeta: IParseMeta | null
   params: Record<string, any>
