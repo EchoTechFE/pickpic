@@ -72,23 +72,16 @@ export const getSystemInfo = (() => {
 
       return systemInfo
     } catch (err) {
-      if (systemInfo) {
-        return systemInfo
+      systemInfo = {
+        windowWidth: 375,
+        windowHeight: 667,
+        pixelRatio: 2,
+        statusBarHeight: 20,
+        platform: 'devtools',
+        system: 'devtools',
       }
-      throw new Error('获取手机系统信息失败')
+
+      return systemInfo
     }
-  }
-})()
-
-export const isAndroid = (() => {
-  let flag = false
-
-  return () => {
-    if (flag === null) {
-      const { system = '' } = getSystemInfo()
-      flag = /android/i.test(system)
-    }
-
-    return flag
   }
 })()

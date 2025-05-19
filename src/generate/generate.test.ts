@@ -77,5 +77,4 @@ test('cloudflare process params', () => {
     .format(FORMAT_PATTERN.WEBP)
     .build()
 
-  console.log('finalUrl', finalUrl)
 })
