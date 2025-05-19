@@ -1,6 +1,6 @@
 {
   "name": "pickpic",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -52,9 +52,7 @@
     "vite-plugin-copy": "^0.1.6",
     "vite-plugin-dts": "^4.5.3",
     "vitest": "^3.0.9",
-    "vue": "^3.4.21"
-  },
-  "dependencies": {
+    "vue": "^3.4.21",
     "pickpic": "file:."
   },
   "packageManager": "pnpm@9.7.0"
