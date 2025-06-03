@@ -14,8 +14,6 @@ import { IUrlProcessBuilder } from './base'
 const { PARAM_SPLITER, WATERMARK_SIGN, ROTATE_SIGN, ORIGIN_SIGN } =
   URL_BUILDER_SIGN
 
-interface IUrlProcessBuilderConfig {}
-
 interface IURLBuildParams {
   mode?: string
   resize?: string
@@ -153,7 +151,9 @@ export class AliyunUrlProcessBuilder implements IUrlProcessBuilder {
       }
     }
 
-    const tempInstance = new AliyunUrlProcessBuilder(this.rawUrl).info().build()
+    const tempInstance = new AliyunUrlProcessBuilder(this.rawUrl, this.pickPic)
+      .info()
+      .build()
 
     const { data } = await this.pickPic?.config?.queryEngine?.get(tempInstance)
 
@@ -207,6 +207,13 @@ export class AliyunUrlProcessBuilder implements IUrlProcessBuilder {
     const searchParams = urlStruct.searchParams
 
     if (!this.urlStruct.protocol.includes('http')) return true
+
+    if (this.pickPic.config?.whiteHostList) {
+      const isInWhiteList = this.pickPic.config.whiteHostList.some((host) => {
+        return this.urlStruct.hostname.includes(host)
+      })
+      if (!isInWhiteList) return true
+    }
 
     const excludePathList = ['tmp', 'im-images']
     const excludeQueryList = ['Expires', 'auth_key']

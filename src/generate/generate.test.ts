@@ -12,6 +12,7 @@ const Fly = require('flyio')
 
 init({
   queryEngine: Fly,
+  whiteHostList:['qiandao']
 })
 
 test('get image info form url and ignore imginfo after build', () => {
@@ -77,4 +78,5 @@ test('cloudflare process params', () => {
     .format(FORMAT_PATTERN.WEBP)
     .build()
 
+  console.info("finalUrl", finalUrl)
 })

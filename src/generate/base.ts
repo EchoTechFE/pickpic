@@ -1,4 +1,5 @@
 import { CustomURL } from '../utils/url'
+import { PickPic } from '../pick'
 
 interface IParseMeta {
   width: number

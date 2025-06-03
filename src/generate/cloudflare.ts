@@ -13,8 +13,6 @@ import { IUrlProcessBuilder } from './base'
 const { PATH_PREFIX, PATH_SPLITER, PARAMS_SPLITER, PARAMS_CONNECTOR } =
   CLOUDFLARE_BUILDER_SIGN
 
-interface IUrlProcessBuilderConfig {}
-
 interface IParseMeta {
   width: number
   height: number
