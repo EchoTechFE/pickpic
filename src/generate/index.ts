@@ -11,9 +11,9 @@ const PROVIDER_BUILDER_LIST = [
 
 export function newUrlProcessBuilder(
   url: string,
-  pickPic: PickPic,
+  pickPic?: PickPic,
 ): IUrlProcessBuilder {
-  pickPic = pickPic ? pickPic : singletonPickPicInstance
+  pickPic = pickPic ? pickPic : singletonPickPicInstance!
   const region = pickPic?.config?.region
 
   const provider =

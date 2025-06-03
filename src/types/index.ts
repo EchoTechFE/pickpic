@@ -13,6 +13,8 @@ export interface IPickPicConfig {
   queryEngine: queryEngine | null
   decodeFunc: ((url: string) => string) | null
 
+  whiteHostList: string[] | null
+
   region: string
 }
 

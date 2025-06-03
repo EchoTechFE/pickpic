@@ -41,6 +41,7 @@ interface IPreviewImage {
 }
 
 export function previewImage({ items = [], current = 0, size }: IPreviewImage) {
+
   const urls = items.map((item) => {
     return item.url
   })
