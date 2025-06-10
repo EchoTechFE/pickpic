@@ -23,7 +23,7 @@ export function newUrlProcessBuilder(
 
   for (const builder of PROVIDER_BUILDER_LIST) {
     if (builder.provider === provider) {
-      return new builder(url,pickPic)
+      return new builder(url, pickPic)
     }
   }
 
@@ -44,6 +44,11 @@ export function getSuitableUrlWithContext(
 ) {
   const urlProcess = newUrlProcessBuilder(url)
 
+  if (ctx.styleName) {
+    urlProcess.styleName(ctx.styleName)
+    return urlProcess.build()
+  }
+
   const alignStyle = findAspect(
     {
       width: ctx.width,
@@ -54,10 +59,6 @@ export function getSuitableUrlWithContext(
       mode: ctx.mode,
     },
   )
-
-  if (ctx.styleName) {
-    urlProcess.styleName(ctx.styleName)
-  }
 
   urlProcess
     .mode(alignStyle.m)

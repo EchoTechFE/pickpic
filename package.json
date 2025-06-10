@@ -1,6 +1,6 @@
 {
   "name": "pickpic",
-  "version": "1.4.6",
+  "version": "1.4.9",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

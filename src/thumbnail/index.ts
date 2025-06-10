@@ -1,5 +1,6 @@
 import { singletonPickPicInstance, findAspect } from '../pick'
 import { IThumbnailSize } from '../types'
+import { getSuitableUrlWithContext } from '../generate'
 
 /**
  * 找到一个图片规格，图片规格尽量与传入的尺寸匹配，在不完全匹配的情况下，选取图片质量更好的图片规格
@@ -41,13 +42,14 @@ interface IPreviewImage {
 }
 
 export function previewImage({ items = [], current = 0, size }: IPreviewImage) {
-
   const urls = items.map((item) => {
-    return item.url
+    return getSuitableUrlWithContext(item.url, {
+      styleName: 'lfit_w1080',
+    })
   })
 
   uni.previewImage({
-    current: String(current),
+    current: urls[current],
     urls,
     indicator: 'number',
   })
