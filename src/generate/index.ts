@@ -31,10 +31,10 @@ export function newUrlProcessBuilder(
 }
 
 interface GetSuitableUrlContext {
-  width: number
-  height: number
-  mode: string
-  widthFirst: boolean
+  width?: number
+  height?: number
+  mode?: string
+  widthFirst?: boolean
   styleName?: string
 }
 
@@ -51,12 +51,12 @@ export function getSuitableUrlWithContext(
 
   const alignStyle = findAspect(
     {
-      width: ctx.width,
-      height: ctx.height,
+      width: ctx.width!,
+      height: ctx.height!,
     },
     {
-      widthFirst: ctx.widthFirst,
-      mode: ctx.mode,
+      widthFirst: ctx.widthFirst!,
+      mode: ctx.mode!,
     },
   )
 
