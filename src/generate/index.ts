@@ -23,7 +23,7 @@ export function newUrlProcessBuilder(
 
   for (const builder of PROVIDER_BUILDER_LIST) {
     if (builder.provider === provider) {
-      return new builder(url,pickPic)
+      return new builder(url, pickPic)
     }
   }
 
@@ -31,10 +31,10 @@ export function newUrlProcessBuilder(
 }
 
 interface GetSuitableUrlContext {
-  width: number
-  height: number
-  mode: string
-  widthFirst: boolean
+  width?: number
+  height?: number
+  mode?: string
+  widthFirst?: boolean
   styleName?: string
 }
 
@@ -44,20 +44,21 @@ export function getSuitableUrlWithContext(
 ) {
   const urlProcess = newUrlProcessBuilder(url)
 
-  const alignStyle = findAspect(
-    {
-      width: ctx.width,
-      height: ctx.height,
-    },
-    {
-      widthFirst: ctx.widthFirst,
-      mode: ctx.mode,
-    },
-  )
-
   if (ctx.styleName) {
     urlProcess.styleName(ctx.styleName)
+    return urlProcess.build()
   }
+
+  const alignStyle = findAspect(
+    {
+      width: ctx.width!,
+      height: ctx.height!,
+    },
+    {
+      widthFirst: ctx.widthFirst!,
+      mode: ctx.mode!,
+    },
+  )
 
   urlProcess
     .mode(alignStyle.m)

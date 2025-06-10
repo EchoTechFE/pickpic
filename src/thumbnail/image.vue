@@ -269,6 +269,8 @@ async function setDisplaySrc() {
 
 function handlePreview() {
   if (props.preview && previewUrl.value) {
+
+
     previewImage({
       items: props.previewList?.map((url) => {
         return {
