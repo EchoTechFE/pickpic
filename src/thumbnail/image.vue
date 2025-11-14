@@ -218,8 +218,6 @@ onMounted(() => {
   observer.relativeToViewport({ bottom: 150 })
 
   observer.observe(`#${uniqueId}`, (res) => {
-    console.log('-----', uniqueId)
-
     const { width, height } = res.boundingClientRect as {
       width: number
       height: number
