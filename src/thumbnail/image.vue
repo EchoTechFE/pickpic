@@ -2,7 +2,7 @@
   <div class="thumbnail-image" :style="thumbnailStyle">
     <img
       v-if="clickStop"
-      id="thumbnail-image-img"
+      :id="uniqueId"
       :class="[
         {
           'thumbnail-image--fade-in': fadeIn,
@@ -18,7 +18,7 @@
     />
     <img
       v-else
-      id="thumbnail-image-img"
+      :id="uniqueId"
       :class="[
         {
           'thumbnail-image--fade-in': fadeIn,
@@ -108,6 +108,8 @@ const props = withDefaults(
     extImageStyle: null,
   },
 )
+
+const uniqueId = `thumbnail-image-${Math.random().toString(36).substr(2, 9)}-${Date.now()}`
 
 const emit = defineEmits(['load', 'error', 'click'])
 
@@ -215,7 +217,9 @@ onMounted(() => {
   // @ts-ignore
   observer.relativeToViewport({ bottom: 150 })
 
-  observer.observe('#thumbnail-image-img', (res) => {
+  observer.observe(`#${uniqueId}`, (res) => {
+    console.log('-----', uniqueId)
+
     const { width, height } = res.boundingClientRect as {
       width: number
       height: number
@@ -269,8 +273,6 @@ async function setDisplaySrc() {
 
 function handlePreview() {
   if (props.preview && previewUrl.value) {
-
-
     previewImage({
       items: props.previewList?.map((url) => {
         return {

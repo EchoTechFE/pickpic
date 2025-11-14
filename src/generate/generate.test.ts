@@ -12,7 +12,7 @@ const Fly = require('flyio')
 
 init({
   queryEngine: Fly,
-  whiteHostList:['qiandao']
+  whiteHostList: ['qiandao'],
 })
 
 test('get image info form url and ignore imginfo after build', () => {
@@ -78,5 +78,21 @@ test('cloudflare process params', () => {
     .format(FORMAT_PATTERN.WEBP)
     .build()
 
-  console.info("finalUrl", finalUrl)
+  console.info('finalUrl', finalUrl)
+})
+
+test('cloudflare process params', () => {
+  const mockUrl = 'https://user.islandsassets.com/avatar/images/fU5StxlRBhv.png'
+
+  singletonPickPicInstance?.setRegion('sg')
+
+  const builder = newUrlProcessBuilder(mockUrl)
+
+  const finalUrl = builder
+    .mode(CLOUDFLARE_RESIZE_MODE.CONTAIN)
+    .resize(RESIZE_PATTERN.WIDTH_240_HEIGHT_240)
+    .format(FORMAT_PATTERN.WEBP)
+    .build()
+
+  console.info('finalUrl', finalUrl)
 })
