@@ -247,7 +247,7 @@ async function setDisplaySrc() {
     return
   }
 
-  const { url, withFirst, defaultUrl } = props
+  const { url, resize, withFirst, defaultUrl } = props
 
   if (!url) {
     displaySrc.value = defaultUrl
@@ -257,6 +257,11 @@ async function setDisplaySrc() {
   const urlProcess = newUrlProcessBuilder(url)
 
   previewUrl.value = urlProcess.build()
+
+  if (!resize) {
+    displaySrc.value = previewUrl.value
+    return
+  }
 
   const processedUrl = getSuitableUrlWithContext(url, {
     width: realSize.value.width,
@@ -271,16 +276,27 @@ async function setDisplaySrc() {
 
 function handlePreview() {
   if (props.preview && previewUrl.value) {
+    const urls =
+      props.previewList?.map((url) => newUrlProcessBuilder(url).build()) || [
+        previewUrl.value,
+      ]
+
+    if (!props.resize) {
+      uni.previewImage({
+        current: urls[props.previewIndex],
+        urls,
+        indicator: 'number',
+      })
+      emit('click')
+      return
+    }
+
     previewImage({
-      items: props.previewList?.map((url) => {
+      items: urls.map((url) => {
         return {
           url,
         }
-      }) || [
-        {
-          url: previewUrl.value,
-        },
-      ],
+      }),
       size: props.size,
       current: props.previewIndex,
     })
